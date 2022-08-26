@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>HapeRemake</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+<script src="JS/meshwriter.min.js"></script>
+
+  <script src='https://assets.codepen.io/16327/gsap-latest-beta.min.js'></script>
+<script src='https://assets.codepen.io/16327/ScrollTrigger.min.js'></script>
+
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+               /*   z-index: 99999!important;  */
+            }
+
+section {
+
+	width: 100%;
+	height: 100vh;	
+	position: relative;
+
+}
+
+.section-one {
+
+}
+
+.section-two {
+
+}
+
+.section-three {
+
+}
+
+.section-four {
+
+}
+
+.section-five {
+
+
+}
+
+
+.scene.one {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+}
+
+section {
+background-color: transparent!important;
+z-index: 50!important;
+}
+  
+.circle {
+  position: absolute;
+  width: 270px;
+  height: 30px;
+  top: 50%;
+  left: 20%;
+  border-radius: 20px;
+  margin: -50px 0 0 -50px;
+  background: transparent;
+  color:white!important;
+  backface-visibility: hidden;
+  text-align: center;
+}
+
+.BG {
+   position: absolute;
+  width: 280px;
+  height: 50px;
+  top: 0%;
+  left: 0%;
+  border-radius: 20px;
+  background: black;
+  color:white!important;
+  backface-visibility: hidden;  
+  opacity: 0.6;
+}
+
+.Inner {
+   position: absolute;
+  width: 270px;
+  height: 30px;
+  top: 15%;
+  left: 0%;
+  border-radius: 20px;
+  background: transparent;
+  color:white!important;
+  backface-visibility: hidden;  
+    
+}
+
+h1 {
+font-size: 50px; 
+text-align: center;
+width: 100;
+color: white;
+}
+
+p {
+font-size: 50px; 
+text-align: center;
+width: 100;
+color: white;    
+    
+}
+ 
+
+.section3Text1 {
+position: relative;
+left: 0px;
+opacity: 0;    
+}
+
+.section3Text2 {
+ opacity: 0;   
+}
+
+.Cam {
+position: fixed;    
+left: 0px;
+top: 100px;
+z-index: 99999999!important;
+}
+            
+        </style>
+    </head>
+<body>
+ 
+ 
+  
+
+
+
+
+
+<style>
+    
+/* Navbar */ 
+
+@charset "UTF-8";
+.navigation {
+  height: 70px;
+  background: #262626;
+position: fixed!important;  
+width: 100%;
+left: 0px;
+top: 0px;
+z-index: 9999999999999999999999!important;
+}
+
+.brand {
+  position: absolute;
+  padding-left: 20px;
+  float: left;
+  line-height: 70px;
+  text-transform: uppercase;
+  font-size: 1.4em;
+}
+.brand a,
+.brand a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+nav {
+  float: right;
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav ul li {
+  float: left;
+  position: relative;
+}
+nav ul li a,
+nav ul li a:visited {
+  display: block;
+  padding: 0 20px;
+  line-height: 70px;
+  background: #262626;
+  color: #ffffff;
+  text-decoration: none;
+}
+nav ul li a:hover,
+nav ul li a:visited:hover {
+  background: #2581DC;
+  color: #ffffff;
+}
+nav ul li a:not(:only-child):after,
+nav ul li a:visited:not(:only-child):after {
+  padding-left: 4px;
+  content: " ▾";
+}
+nav ul li ul li {
+  min-width: 190px;
+}
+nav ul li ul li a {
+  padding: 15px;
+  line-height: 20px;
+}
+
+.nav-dropdown {
+  position: absolute;
+  display: none;
+  z-index: 1;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile navigation */
+.nav-mobile {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #262626;
+  height: 70px;
+  width: 70px;
+}
+
+@media only screen and (max-width: 798px) {
+  .nav-mobile {
+    display: block;
+  }
+
+  nav {
+    width: 100%;
+    padding: 70px 0 15px;
+  }
+  nav ul {
+    display: none;
+  }
+  nav ul li {
+    float: none;
+  }
+  nav ul li a {
+    padding: 15px;
+    line-height: 20px;
+  }
+  nav ul li ul li a {
+    padding-left: 30px;
+  }
+
+  .nav-dropdown {
+    position: static;
+  }
+}
+@media screen and (min-width: 799px) {
+  .nav-list {
+    display: block !important;
+  }
+}
+#nav-toggle {
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  cursor: pointer;
+  padding: 10px 35px 16px 0px;
+}
+#nav-toggle span,
+#nav-toggle span:before,
+#nav-toggle span:after {
+  cursor: pointer;
+  border-radius: 1px;
+  height: 5px;
+  width: 35px;
+  background: #ffffff;
+  position: absolute;
+  display: block;
+  content: "";
+  transition: all 300ms ease-in-out;
+}
+#nav-toggle span:before {
+  top: -10px;
+}
+#nav-toggle span:after {
+  bottom: -10px;
+}
+#nav-toggle.active span {
+  background-color: transparent;
+}
+#nav-toggle.active span:before, #nav-toggle.active span:after {
+  top: 0;
+}
+#nav-toggle.active span:before {
+  transform: rotate(45deg);
+}
+#nav-toggle.active span:after {
+  transform: rotate(-45deg);
+}
+
+article {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+ 
+</style>
+
+<div class="navigation">
+  <div class="nav-container">
+    <div class="brand">
+      
+    </div>
+    <nav>
+      <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
+      <ul class="nav-list">
+        <li>
+          <a href="index.php">Home
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+</svg>          
+          </a>
+        </li>
+
+
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+ 
+ 
+  
+<script>
+
+(function($) { // Begin jQuery
+  $(function() { // DOM ready
+    // If a link has a dropdown, add sub menu toggle.
+    $('nav ul li a:not(:only-child)').click(function(e) {
+      $(this).siblings('.nav-dropdown').toggle();
+      // Close one dropdown when selecting another
+      $('.nav-dropdown').not($(this).siblings()).hide();
+      e.stopPropagation();
+    });
+    // Clicking away from dropdown will remove the dropdown class
+    $('html').click(function() {
+      $('.nav-dropdown').hide();
+    });
+    // Toggle open and close nav styles on click
+    $('#nav-toggle').click(function() {
+      $('nav ul').slideToggle();
+    });
+    // Hamburger to X toggle
+    $('#nav-toggle').on('click', function() {
+      this.classList.toggle('active');
+    });
+  }); // end DOM ready
+})(jQuery); // end jQuery      
+      
+</script>    
+
+    
+    <canvas id="renderCanvas"></canvas>
+   
+
+<div class="Cam" id="contentInner">
+
+<button onclick='changeCam();'> Cam </button>
+
+<script>
+// Turn on and off camera
+
+var lightState = "on";  
+    
+function changeCam(){
+
+
+if (lightState == "on") {
+    
+    lightState = "off"
+var camChange = document.getElementById('main');    
+camChange.style.display = 'none'; 
+    
+  } else {
+      
+    lightState = "on"
+var camChange = document.getElementById('main');     
+camChange.style.display = '';  
+    
+  }
+
+
+}
+    
+</script>
+    
+</div>
+
+
+<div class="circle" id="soundText"> 
+<div class="BG"> </div>
+<div class="Inner">
+&nbsp; 
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-volume-up" viewBox="0 0 16 16">
+  <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+  <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/>
+  <path d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.841-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 5.5H1.5A.5.5 0 0 0 1 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 12V4zM4.312 6.39 6 5.04v5.92L4.312 9.61A.5.5 0 0 0 4 9.5H2v-3h2a.5.5 0 0 0 .312-.11z"/>
+</svg>
+Click anywhere to enable the sound
+</div>
+</div>
+
+
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.4/TweenMax.min.js'></script>
+
+<script>
+var $circle = $('.circle');
+
+function moveCircle(e) {
+	TweenLite.to($circle, 0.0, {
+    css: {
+      left: e.pageX,
+      top: e.pageY
+    }
+  });
+}
+
+$(window).on('mousemove', moveCircle);
+
+</script>   
+    
+  <audio id="sound" controls loop style="display: none!important">
+  <source src="Music/meb2.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>    
+
+<script>
+
+var Audiocontent = document.getElementById('soundText');
+
+
+document.addEventListener('click', musicPlay);
+function musicPlay() {
+    document.getElementById('sound').play();
+    document.removeEventListener('click', musicPlay);
+    Audiocontent.style.display = 'none';
+}
+</script>
+
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+<div id="main">
+
+<section class="section-one">
+<br> <br> <br> <br>
+<h1> TestA Scroll</h1>
+
+</section>
+
+
+
+
+
+<section class="section-two">
+</section>
+
+
+
+
+<section class="section-three" id="section-three">
+ 
+<h1 class="section3Text1"> The scroll trigger: </h1>    
+<p class="section3Text2">
+Powered by Gsap and BabylonJS
+</p>    
+    
+</section>
+
+
+
+
+
+<section class="section-four">
+    
+
+
+</section>
+
+
+
+
+
+<section class="section-five">
+ 
+<h1>END</h1>
+
+
+</section>
+
+ </div>
+ 
+    
+
+<script>
+
+
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+        const createScene = function () {
+    const scene = new BABYLON.Scene(engine);
+    
+  
+    // scene color
+ scene.clearColor = new BABYLON.Color3(0.53, 0.05, 0.05);
+  //scene.clearColor = new BABYLON.Color3(0, 0, 0);
+
+// HapeBar
+
+function hapeBar(){
+  
+var lightState = "on"; 
+
+    document.addEventListener('keydown', function(event)
+    {
+      var code = event.keyCode || event.which;
+      if (code === 32) { 
+
+if (lightState == "on") {
+    
+    lightState = "off"
+scene.clearColor = new BABYLON.Color3(0, 0, 0);
+    
+  } else {
+      
+    lightState = "on"
+scene.clearColor = new BABYLON.Color3(158, 0, 0);
+    
+  }
+
+
+      }
+ 
+        
+    });     
+    
+}
+
+   
+
+
+    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(10, 10, 10), scene);
+    camera.attachControl(canvas, true);
+    
+            camera.lowerRadiusLimit = 15;
+            camera.upperRadiusLimit = 15; // 30
+            camera.wheelDeltaPercentage = 0.01;    
+  
+
+
+
+//contentInner
+var contentInner = document.getElementById('contentInner');
+//contentInner.innerHTML = ` <button onclick='changeCam();'> Cam </button> `; 
+
+
+
+
+    
+    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 10, 0));
+
+// Glowing effect on emissive materials
+var gl = new BABYLON.GlowLayer("glow", scene, { mainTextureSamples: 4 }); 
+
+
+    const ground = BABYLON.MeshBuilder.CreateBox("box", {height: 1, width: 1, depth: 1 });
+    
+    ground.material = new BABYLON.StandardMaterial("road", scene)
+    ground.material.diffuseTexture = new BABYLON.Texture("Textures/Wood_Floor_006_COLOR (2).jpg", scene);
+	ground.material.bumpTexture = new BABYLON.Texture("Textures/Stage_Floor_001_normal.jpg", scene);	
+	ground.material.specularTexture = new BABYLON.Texture("Textures/Stage_Floor_001_ambientOcclusion.jpg", scene);    
+ 
+           ground.material.bumpTexture.uScale = 20;
+           ground.material.bumpTexture.vScale = 20;
+              
+           ground.material.diffuseTexture.uScale = 20;
+           ground.material.diffuseTexture.vScale = 20;  
+           
+           ground.material.specularTexture.uScale = 20;
+           ground.material.specularTexture.vScale = 20;  
+
+
+ground.position.z = 7
+ground.position.y = -6
+ground.isVisible = false 
+
+
+
+
+	// Mirror
+    var mirror = BABYLON.Mesh.CreateBox("Mirror", 1.0, scene);
+    //var mirror = BABYLON.Mesh.CreatePlane("mirror", 100.0, scene);
+   // mirror.physicsImpostor = new BABYLON.PhysicsImpostor(mirror, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.1, restitution: 0.9 }, scene);
+    mirror.checkCollisions = true;
+
+    mirror.scaling = new BABYLON.Vector3(100.0, 0.01, 100.0);
+    //mirror.material = new BABYLON.PBRMaterial("mirror", scene);
+    mirror.material = new BABYLON.StandardMaterial("mirror", scene);
+    mirror.material.reflectionTexture = new BABYLON.MirrorTexture("mirror", 1024, scene, true);
+    mirror.material.reflectionTexture.mirrorPlane = new BABYLON.Plane(10, -10, 10, 0 ); // 0, -1.0, 0, -2.0
+    //mirror.material.reflectionTexture.renderList = [ box, ];
+    mirror.material.reflectionTexture.renderList.push(  );
+    mirror.material.reflectionTexture.level = 1; // 0.8
+
+    //mirror.material.metallicTexture = new BABYLON.Texture("textures/Wood_Floor_006_ROUGH.jpg", scene); // metal
+    mirror.material.diffuseTexture = new BABYLON.Texture("Textures/ttx4.jpg", scene); // basecolor
+    mirror.material.bumpTexture = new BABYLON.Texture("Textures/ttx4.jpg", scene);   // normal
+    
+           mirror.material.bumpTexture.uScale = 20;
+           mirror.material.bumpTexture.vScale = 20;
+              
+           mirror.material.diffuseTexture.uScale = 20;
+           mirror.material.diffuseTexture.vScale = 20;  
+           
+    //mirror.material.metallicTexture.uScale = 50;
+    //mirror.material.metallicTexture.vScale = 50;           
+
+//mirror.material.useRGBColor = false;
+//mirror.material.primaryColor = BABYLON.Color3.Magenta();
+    
+mirror.position = new BABYLON.Vector3(0, 0, 0);  
+mirror.parent = ground;
+
+mirror.checkCollisions = true;
+//mirror.isVisible = false
+
+
+
+// Model
+
+
+
+
+
+
+BABYLON.SceneLoader.ImportMesh("", "", "Models/aa49.glb", scene, function (newMeshes, particleSystems, skeletons) { 
+//BABYLON.SceneLoader.ImportMesh("", "", "Models/SecurityCam.glb", scene, function (newMeshes, particleSystems, skeletons) {    
+    
+var character = newMeshes[0];
+
+var PI = Math.PI / -1;
+
+character.rotation = new BABYLON.Vector3(0, PI, 0);
+character.position.y = 0
+character.position.z = 0
+character.position.x = 0
+character.scaling = new BABYLON.Vector3(0.05, 0.05, 0.05);
+//character.scaling = new BABYLON.Vector3(5, 5, 5);
+character.parent = ground;
+
+
+// loop for mirror
+for (let i = 0; i < newMeshes.length; i++) {
+ 
+mirror.material.reflectionTexture.renderList.push( newMeshes[i] );
+  
+} 
+
+
+//init the animation from model
+const firstAnim = scene.getAnimationGroupByName("All");
+firstAnim.start(true, 1.0, firstAnim.from, firstAnim.to, false);
+
+        });
+
+
+// Lamps
+	var GlowMat = new BABYLON.StandardMaterial("redMat", scene);
+	GlowMat.emissiveColor = new BABYLON.Color3(1, 1, 1); // RGB colors
+
+
+const Lamp1 = BABYLON.MeshBuilder.CreateCylinder("cylinder", {  });
+Lamp1.position.z = 0
+Lamp1.position.y = 10;
+Lamp1.position.x = 5
+Lamp1.scaling = new BABYLON.Vector3(0.2, 2, 0.2);
+Lamp1.parent = ground;
+Lamp1.material = GlowMat;
+
+
+const Lamp2 = BABYLON.MeshBuilder.CreateCylinder("cylinder", {  });
+Lamp2.position.z = 0
+Lamp2.position.y = 10;
+Lamp2.position.x = -5
+Lamp2.scaling = new BABYLON.Vector3(0.2, 2, 0.2);
+Lamp2.parent = ground;
+Lamp2.material = GlowMat;
+
+const Lamp3 = BABYLON.MeshBuilder.CreateCylinder("cylinder", {  });
+Lamp3.position.z = 5
+Lamp3.position.y = 10;
+Lamp3.position.x = 0
+Lamp3.scaling = new BABYLON.Vector3(0.2, 2, 0.2);
+Lamp3.parent = ground;
+Lamp3.material = GlowMat;
+
+const Lamp4 = BABYLON.MeshBuilder.CreateCylinder("cylinder", {  });
+Lamp4.position.z = -5
+Lamp4.position.y = 10;
+Lamp4.position.x = 0
+Lamp4.scaling = new BABYLON.Vector3(0.2, 2, 0.2);
+Lamp4.parent = ground;
+Lamp4.material = GlowMat;
+
+
+
+scene.registerBeforeRender(() => { 
+
+Lamp1.rotation.x += 0.01    
+Lamp2.rotation.x -= 0.01
+Lamp3.rotation.x += 0.01 
+Lamp4.rotation.x -= 0.01  
+    
+});
+
+
+// Particles
+
+ // Create a particle system
+    var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+    particleSystem.parent = ground
+    
+    //Texture of each particle
+    particleSystem.particleTexture = new BABYLON.Texture("Textures/particule.png", scene);
+
+    // Where the particles come from
+    particleSystem.emitter = BABYLON.Vector3.Zero(); // the starting position
+    particleSystem.minEmitBox = new BABYLON.Vector3(-1, -1, -1); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(1, 1, 1); // To...
+
+    // Colors of all particles
+    particleSystem.color1 = new BABYLON.Color4(0.99, 0.98, 0.98, 0);
+    particleSystem.color2 = new BABYLON.Color4(1, 1, 1, 0);
+    particleSystem.colorDead = new BABYLON.Color4(1, 1, 1, 0); 
+
+    // Size of each particle (random between...
+    particleSystem.minSize = 0;
+    particleSystem.maxSize = 0;
+    // both 0 so size must be 0 at start
+
+    //new property to give final size for particles
+    particleSystem.finalSize = 0.2;
+
+    // Life time of each particle (random between...
+    particleSystem.minLifeTime = 4;
+    particleSystem.maxLifeTime = 8;
+
+    // Emission rate
+    particleSystem.emitRate = 200;
+
+    // Direction of each particle after it has been emitted
+    particleSystem.direction1 = new BABYLON.Vector3(10, 10, -10);
+    particleSystem.direction2 = new BABYLON.Vector3(-10, -10, 10);
+
+    // Speed
+    //particleSystem.minEmitPower = 1;
+    //particleSystem.maxEmitPower = 1;
+    particleSystem.updateSpeed = 0.005;
+
+	particleSystem.updateFunction  = function(particles) {
+                for (var index = 0; index < particles.length; index++) {
+                    var particle = particles[index];
+                    particle.age += this._scaledUpdateSpeed;
+
+                    if (particle.age < particle.lifeTime * .35) {
+                        particle.size = particleSystem.finalSize * particle.age / (particle.lifeTime * 0.35);
+                    }
+
+                    if (particle.age >= particle.lifeTime) { // Recycle by swapping with last particle
+                        this.recycleParticle(particle);
+                        index--;
+                        continue;
+                    }
+                    else {
+						var speed = this._scaledUpdateSpeed * 2;
+						if (particle.age >= particle.lifeTime / 2) {
+							speed = -speed;
+						}
+						
+                        particle.colorStep.scaleToRef(speed, this._scaledColorStep);
+						
+						
+                        particle.color.addInPlace(this._scaledColorStep);
+
+                        if (particle.color.a < 0)
+                            particle.color.a = 0;
+
+                        particle.angle += particle.angularSpeed * this._scaledUpdateSpeed;
+
+                        particle.direction.scaleToRef(this._scaledUpdateSpeed, this._scaledDirection);
+                        particle.position.addInPlace(this._scaledDirection);
+
+                        this.gravity.scaleToRef(this._scaledUpdateSpeed, this._scaledGravity);
+                        particle.direction.addInPlace(this._scaledGravity);
+                    }
+                }
+            }
+
+    // Start the particle system
+    particleSystem.start();
+
+
+
+
+// Scrolltrigger
+
+	  gsap.registerPlugin(ScrollTrigger);
+    
+    
+    camera.position.set(0.014, 1.07, 2.10) // XYZ
+    
+    
+    ScrollTrigger.defaults({
+      immediateRender: false,
+      ease: "power1.inOut",
+    });
+    
+    
+    
+    let car_anim_tl = gsap.timeline({
+
+        scrollTrigger: {
+      trigger: ".section-two",
+        //  trigger: "body",
+          start: "top top", 
+          endTrigger: ".section-five",
+          end: "bottom bottom", 
+          scrub: 1, 
+       }
+      
+    });
+    
+ // start of timeline   
+    car_anim_tl
+      .to(ground.rotation, { y: 6.5 }, "simultaneously") 
+      .to(ground.position, { z: 30 }, "simultaneously")   
+
+// end of timeline
+
+		gsap.to(".section3Text1", {
+			scrollTrigger:{
+				trigger: ".section-three",
+				start: "top bottom", 
+				end: "bottom top", 
+				scrub: 1,
+				markers: false
+			},
+			x: 0, opacity: 1, color: "blue"
+
+		})	
+
+
+
+
+    return scene;
+}
+                window.initFunction = async function() {
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene                    
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+        
+</script>        
+        
+</body>
+</html>
